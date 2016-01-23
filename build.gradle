@@ -1,4 +1,32 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.jfrog.bintray'
+
+Properties localProps = new Properties()
+localProps.load(project.rootProject.file('local.properties').newDataInputStream())
+
+bintray {
+    user = localProps.getProperty('bintray.user')
+    key = localProps.getProperty('bintray.key')
+    configurations = ['archives']
+    pkg {
+        repo = 'maven'
+        name = 'loaders'
+        userOrg = 'tjorn-mobi'
+        desc = 'Almost a drop-in replacement for AsyncTask.'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/TJORN-MOBI/mobi.tjorn.content.loaders.git'
+        publicDownloadNumbers = true
+        version {
+            name = '1.0.0'
+            desc = 'Initial version'
+            vcsTag = '1.0.0'
+            gpg {
+                sign = true
+                passphrase = localProps.getProperty('bintray.gpg.passphrase')
+            }
+        }
+    }
+}
 
 android {
     compileSdkVersion 23
