@@ -18,9 +18,11 @@ package mobi.tjorn.content.loaders;
 
 /**
  * A result whose lifecycle is managed by {@link ResultLoader}.
- * The {@link Result} states are: <br/>
- * - Not Released<br/>
- * - Released<br/>
+ * The {@link Result} states are:
+ * <ul>
+ *     <li>Not Released</li>
+ *     <li>Released</li>
+ * </ul>
  * Implement this interface on your own result if neither {@link BaseResult} nor
  * {@link SimpleResult} fit your requirements.
  */

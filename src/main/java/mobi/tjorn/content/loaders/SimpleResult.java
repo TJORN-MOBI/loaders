@@ -17,10 +17,12 @@
 package mobi.tjorn.content.loaders;
 
 /**
- *  A simple {@link BaseResult} that can be only in Released state.  Examples:<br/>
- *  - {@link String}<br/>
- *  - {@link Integer}<br/>
- *  - any other type that does not allocate resources and does not need to be released.<br/>
+ *  A simple {@link BaseResult} that can be only in Released state.  Examples:
+ *  <ul>
+ *      <li>{@link String}</li>
+ *      <li>{@link Integer}</li>
+ *      <li>any other type that does not allocate resources and does not need to be released</li>
+ *  </ul>
  */
 public class SimpleResult<D> extends BaseResult<D, Throwable> {
     public SimpleResult(D data) {

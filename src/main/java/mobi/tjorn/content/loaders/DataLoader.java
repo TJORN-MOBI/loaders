@@ -20,9 +20,11 @@ import android.content.Context;
 
 /**
  * A loader that manages lifecycle of its data {@link D} parameter.
- * The data {@link D} states are: <br/>
- * - Not Released<br/>
- * - Released<br/>
+ * The data {@link D} states are:
+ * <ul>
+ *     <li>Not Released</li>
+ *     <li>Released</li>
+ * </ul>
  * If your data {@link D} parameter does not have a means to report loading error,
  * you might consider {@link ResultLoader} and {@link BaseResult}.
  * If your data {@link D} parameter is always in Released state (e.g., {@link String}),
@@ -37,12 +39,14 @@ public abstract class DataLoader<D> extends BaseLoader<D> {
 
     /**
      * Reports data {@link D} states to {@link DataLoader}.
+     * @param data Data item whose state is being checked.
      * @return {@code false} for Not Released state. {@code true} for Released state.
      */
     protected abstract boolean isDataReleased(D data);
 
     /**
      * Transitions data {@link D} from Not Released state to Released state.
+     * @param data Data item whose state is being changed.
      */
     protected abstract void releaseData(D data);
 
