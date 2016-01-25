@@ -27,12 +27,12 @@ public abstract class ResultLoader<R extends Result> extends DataLoader<R> {
     }
 
     @Override
-    protected boolean isDataReleased(R data) {
+    protected final boolean isDataReleased(R data) {
         return data.isReleased();
     }
 
     @Override
-    protected void releaseData(R data) {
+    protected final void releaseData(R data) {
         data.release();
     }
 }
