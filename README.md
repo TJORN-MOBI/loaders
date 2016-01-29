@@ -4,9 +4,8 @@
 Almost a drop-in replacement for [AsyncTask](http://developer.android.com/reference/android/os/AsyncTask.html).
 
 ### Introduction
-Many online guides use [AsyncTasks](http://developer.android.com/reference/android/os/AsyncTask.html) 
-to perform background operations.  Take a look, for example, at 
-[Authorizing with Google for REST APIs](https://developers.google.com/android/guides/http-auth#extend_asynctask_to_get_the_auth_token).
+Many online guides, like [Authorizing with Google for REST APIs](https://developers.google.com/android/guides/http-auth#extend_asynctask_to_get_the_auth_token), use [AsyncTasks](http://developer.android.com/reference/android/os/AsyncTask.html) 
+to perform background operations.
 But the problem with [AsyncTasks](http://developer.android.com/reference/android/os/AsyncTask.html) is that they are not
 integrated with [Activity Lifecycle](http://developer.android.com/guide/components/activities.html#Lifecycle).  
 Developers have to write error-prone code to handle Activity pausing, stopping, destruction, configuration changes, etc.
@@ -14,9 +13,9 @@ Developers have to write error-prone code to handle Activity pausing, stopping, 
 [Loaders](http://developer.android.com/guide/components/loaders.html) are integrated with 
 [Activity Lifecycle](http://developer.android.com/guide/components/activities.html#Lifecycle), 
 but they are not as widely popular as [AsyncTasks](http://developer.android.com/reference/android/os/AsyncTask.html),
-except, may be, [CursorLoader](http://developer.android.com/reference/android/content/CursorLoader.html).
-The reason is they are not as easy to create as [AsyncTasks](http://developer.android.com/reference/android/os/AsyncTask.html).
-The goal of this library is to make [Loaders](http://developer.android.com/guide/components/loaders.html) easy to use.
+except [CursorLoader](http://developer.android.com/reference/android/content/CursorLoader.html).
+[Loaders](http://developer.android.com/guide/components/loaders.html) are not as easy to create and use as [AsyncTasks](http://developer.android.com/reference/android/os/AsyncTask.html).
+This library attempts to make [Loaders](http://developer.android.com/guide/components/loaders.html) easy to use.
 
 ### How to use
 1. Subclass one of the Loaders in this library and, optionally, one of the Resutls.
