@@ -55,7 +55,7 @@ public abstract class WorkerLoader<D> extends Loader<D> implements LoaderDelegat
     }
 
     /**
-     * Reports data {@link D} states to {@link DataLoader}.
+     * Reports data {@link D} states to {@link WorkerLoader}.
      * @param data Data item whose state is being checked.
      * @return {@code false} for Not Released state. {@code true} for Released state.
      */

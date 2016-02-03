@@ -21,7 +21,7 @@ import android.content.Context;
 /**
  * A base Loader that manages lifecycle of its {@link Result}.
  */
-public abstract class ResultLoader<R extends Result> extends DataLoader<R> {
+public abstract class ResultLoader<R extends Result> extends TaskLoader<R> {
     protected ResultLoader(Context context) {
         super(context);
     }

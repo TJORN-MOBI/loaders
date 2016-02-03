@@ -31,7 +31,7 @@ public abstract  class LoaderDelegate<D, L extends Loader<D> & LoaderDelegate.Su
     }
 
     /**
-     * Reports data {@link D} states to {@link DataLoader}.
+     * Reports data {@link D} states to {@link LoaderDelegate}.
      * @param data Data item whose state is being checked.
      * @return {@code false} for Not Released state. {@code true} for Released state.
      */
