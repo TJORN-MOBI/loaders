@@ -52,6 +52,12 @@ public abstract class WorkerLoader<D> extends BaseLoader<D> {
         cancelLoad();
     }
 
+    public void onCanceled(D data) {
+        if (data != null && !isDataReleased(data)) {
+            releaseData(data);
+        }
+    }
+
     @Override
     protected void onForceLoad() {
         super.onForceLoad();
@@ -118,15 +124,18 @@ public abstract class WorkerLoader<D> extends BaseLoader<D> {
         @Override
         public void onResult(final D result) {
             synchronized (lock) {
-                if (this == resultListener) {
-                    resultListener = null;
-                    dispatcher.post(new Runnable() {
-                        @Override
-                        public void run() {
+                final boolean canceled = this != resultListener;
+                resultListener = null;
+                dispatcher.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (canceled) {
+                            onCanceled(result);
+                        } else {
                             deliverResult(result);
                         }
-                    });
-                }
+                    }
+                });
             }
         }
     }
