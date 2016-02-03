@@ -20,7 +20,16 @@ import android.content.Context;
 import android.os.Handler;
 
 /**
- *
+ * A loader that extends {@link android.content.Loader} and uses
+ * {@link Worker} to load its data.
+ * The actual load happens on some worker thread.  The worker thread
+ * may even run in native code and results can be delivered through JNI.
+ * This loader manages lifecycle of its data {@link D} parameter.
+ * The data {@link D} states are:
+ * <ul>
+ *     <li>Not Released</li>
+ *     <li>Released</li>
+ * </ul>
  */
 public abstract class WorkerLoader<D> extends BaseWorkerLoader<D> {
     private final Object lock = new Object();
@@ -34,7 +43,17 @@ public abstract class WorkerLoader<D> extends BaseWorkerLoader<D> {
         this.worker = worker;
     }
 
+    /**
+     * Reports data {@link D} states to {@link DataLoader}.
+     * @param data Data item whose state is being checked.
+     * @return {@code false} for Not Released state. {@code true} for Released state.
+     */
     protected abstract boolean isDataReleased(D data);
+
+    /**
+     * Transitions data {@link D} from Not Released state to Released state.
+     * @param data Data item whose state is being changed.
+     */
     protected abstract void releaseData(D data);
 
     @Override

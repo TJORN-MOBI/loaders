@@ -16,10 +16,14 @@
 
 package mobi.tjorn.content.loaders;
 
+import android.content.AsyncTaskLoader;
 import android.content.Context;
 
 /**
- * A loader that manages lifecycle of its data {@link D} parameter.
+ * A loader that extends {@link android.content.AsyncTaskLoader}
+ * and uses {@link android.os.AsyncTask} to load its data.
+ * The data is loaded by {@link AsyncTaskLoader#loadInBackground()} method.
+ * This loader that manages lifecycle of its data {@link D} parameter.
  * The data {@link D} states are:
  * <ul>
  *     <li>Not Released</li>
