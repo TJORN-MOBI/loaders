@@ -22,7 +22,7 @@ import android.support.v4.content.Loader;
 /**
  *
  */
-public class BaseExternalLoader<D> extends Loader<D> {
+public class BaseWorkerLoader<D> extends Loader<D> {
     /**
      * Stores away the application context associated with context.
      * Since Loaders can be used across multiple activities it's dangerous to
@@ -33,7 +33,7 @@ public class BaseExternalLoader<D> extends Loader<D> {
      *
      * @param context used to retrieve the application context.
      */
-    public BaseExternalLoader(Context context) {
+    public BaseWorkerLoader(Context context) {
         super(context);
     }
 }

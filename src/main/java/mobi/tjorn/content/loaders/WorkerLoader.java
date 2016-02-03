@@ -21,7 +21,7 @@ import android.content.Context;
 /**
  *
  */
-public abstract class ExternalLoader<D> extends BaseExternalLoader<D> {
+public abstract class WorkerLoader<D> extends BaseWorkerLoader<D> {
     private final Object lock = new Object();
     private final ExternalWorker<D> worker;
     private ResultListener<D> resultListener;
@@ -37,7 +37,7 @@ public abstract class ExternalLoader<D> extends BaseExternalLoader<D> {
      *
      * @param context used to retrieve the application context.
      */
-    public ExternalLoader(Context context, ExternalWorker<D> worker) {
+    public WorkerLoader(Context context, ExternalWorker<D> worker) {
         super(context);
         this.worker = worker;
     }
