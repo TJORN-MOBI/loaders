@@ -34,7 +34,7 @@ import android.content.Context;
  * If your data {@link D} parameter is always in Released state (e.g., {@link String}),
  * please take a look at {@link SimpleResultLoader} and {@link SimpleResult}.
  */
-public abstract class DataLoader<D> extends BaseLoader<D> {
+public abstract class DataLoader<D> extends AsyncTaskLoader<D> {
     private D result;
 
     public DataLoader(Context context) {

@@ -16,17 +16,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    productFlavors {
-        stock {
-        }
-        support {
-        }
-    }
-    defaultPublishConfig 'stockRelease'
-    publishNonDefault true
 }
 
 dependencies {
     testCompile 'junit:junit:4.12'
-    supportCompile 'com.android.support:support-v4:23.1.1'
 }

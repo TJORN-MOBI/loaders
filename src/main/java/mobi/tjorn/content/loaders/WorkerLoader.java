@@ -17,6 +17,7 @@
 package mobi.tjorn.content.loaders;
 
 import android.content.Context;
+import android.content.Loader;
 import android.os.Handler;
 
 /**
@@ -31,7 +32,7 @@ import android.os.Handler;
  *     <li>Released</li>
  * </ul>
  */
-public abstract class WorkerLoader<D> extends BaseWorkerLoader<D> {
+public abstract class WorkerLoader<D> extends Loader<D> {
     private final Object lock = new Object();
     private final Handler dispatcher = new Handler();
     private final Worker<D> worker;
