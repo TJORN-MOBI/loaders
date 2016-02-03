@@ -17,42 +17,24 @@
 package mobi.tjorn.content.loaders;
 
 import android.content.Context;
+import android.os.Handler;
 
 /**
  *
  */
-public abstract class WorkerLoader<D> extends BaseWorkerLoader<D> {
+public abstract class WorkerLoader<D> extends BaseLoader<D> {
     private final Object lock = new Object();
-    private final ExternalWorker<D> worker;
+    private final Handler dispatcher = new Handler();
+    private final Worker<D> worker;
     private ResultListener<D> resultListener;
     private D result;
 
-    /**
-     * Stores away the application context associated with context.
-     * Since Loaders can be used across multiple activities it's dangerous to
-     * store the context directly; always use {@link #getContext()} to retrieve
-     * the Loader's Context, don't use the constructor argument directly.
-     * The Context returned by {@link #getContext} is safe to use across
-     * Activity instances.
-     *
-     * @param context used to retrieve the application context.
-     */
-    public WorkerLoader(Context context, ExternalWorker<D> worker) {
+    public WorkerLoader(Context context, Worker<D> worker) {
         super(context);
         this.worker = worker;
     }
 
-    /**
-     * Reports data {@link D} states to {@link DataLoader}.
-     * @param data Data item whose state is being checked.
-     * @return {@code false} for Not Released state. {@code true} for Released state.
-     */
     protected abstract boolean isDataReleased(D data);
-
-    /**
-     * Transitions data {@link D} from Not Released state to Released state.
-     * @param data Data item whose state is being changed.
-     */
     protected abstract void releaseData(D data);
 
     @Override
@@ -123,7 +105,7 @@ public abstract class WorkerLoader<D> extends BaseWorkerLoader<D> {
         result = null;
     }
 
-    public interface ExternalWorker<D> {
+    public interface Worker<D> {
         void start(ResultListener<D> listener);
         void cancel();
     }
@@ -134,11 +116,16 @@ public abstract class WorkerLoader<D> extends BaseWorkerLoader<D> {
 
     private class ResultListenerImpl implements ResultListener<D> {
         @Override
-        public void onResult(D result) {
+        public void onResult(final D result) {
             synchronized (lock) {
                 if (this == resultListener) {
-                    deliverResult(result);
                     resultListener = null;
+                    dispatcher.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            deliverResult(result);
+                        }
+                    });
                 }
             }
         }
