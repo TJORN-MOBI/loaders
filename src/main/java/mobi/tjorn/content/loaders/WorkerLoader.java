@@ -32,12 +32,22 @@ import android.os.Handler;
  *     <li>Released</li>
  * </ul>
  */
-public abstract class WorkerLoader<D> extends Loader<D> {
+public abstract class WorkerLoader<D> extends Loader<D> implements LoaderDelegate.SuperCaller<D> {
     private final Object lock = new Object();
     private final Handler dispatcher = new Handler();
     private final Worker<D> worker;
     private ResultListener<D> resultListener;
-    private D result;
+    private final LoaderDelegate<D, WorkerLoader<D>> delegate = new LoaderDelegate<D, WorkerLoader<D>>(this) {
+        @Override
+        protected boolean isDataReleased(D data) {
+            return WorkerLoader.this.isDataReleased(data);
+        }
+
+        @Override
+        protected void releaseData(D data) {
+            WorkerLoader.this.releaseData(data);
+        }
+    };
 
     public WorkerLoader(Context context, Worker<D> worker) {
         super(context);
@@ -59,28 +69,35 @@ public abstract class WorkerLoader<D> extends Loader<D> {
 
     @Override
     protected void onStartLoading() {
-        if (result != null) {
-            deliverResult(result);
-        }
-        if (takeContentChanged() || result == null) {
-            forceLoad();
-        }
+        delegate.onStartLoading();
     }
 
     @Override
     protected void onStopLoading() {
-        cancelLoad();
+        delegate.onStopLoading();
     }
 
     public void onCanceled(D data) {
-        if (data != null && !isDataReleased(data)) {
-            releaseData(data);
-        }
+        delegate.onCanceled(data);
+    }
+
+    @Override
+    public void deliverResult(D data) {
+        delegate.deliverResult(data);
+    }
+
+    @Override
+    protected void onReset() {
+        delegate.onReset();
+    }
+
+    @Override
+    public void superDeliverResult(D data) {
+        super.deliverResult(data);
     }
 
     @Override
     protected void onForceLoad() {
-        super.onForceLoad();
         cancelLoad();
         synchronized (lock) {
             resultListener = new ResultListenerImpl();
@@ -98,37 +115,6 @@ public abstract class WorkerLoader<D> extends Loader<D> {
             }
             return false;
         }
-    }
-
-    @Override
-    public void deliverResult(D data) {
-        if (isReset()) {
-            if (data != null) {
-                releaseData(data);
-            }
-            return;
-        }
-
-        final D oldResult = result;
-        result = data;
-
-        if (isStarted()) {
-            super.deliverResult(data);
-        }
-
-        if (oldResult != null && oldResult != data && !isDataReleased(oldResult)) {
-            releaseData(oldResult);
-        }
-    }
-
-    @Override
-    protected void onReset() {
-        cancelLoad();
-
-        if (result != null && !isDataReleased(result)) {
-            releaseData(result);
-        }
-        result = null;
     }
 
     public interface Worker<D> {

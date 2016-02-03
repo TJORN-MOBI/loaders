@@ -34,8 +34,18 @@ import android.content.Context;
  * If your data {@link D} parameter is always in Released state (e.g., {@link String}),
  * please take a look at {@link SimpleResultLoader} and {@link SimpleResult}.
  */
-public abstract class DataLoader<D> extends AsyncTaskLoader<D> {
-    private D result;
+public abstract class DataLoader<D> extends AsyncTaskLoader<D> implements LoaderDelegate.SuperCaller<D> {
+    private final LoaderDelegate<D, DataLoader<D>> delegate = new LoaderDelegate<D, DataLoader<D>>(this) {
+        @Override
+        protected boolean isDataReleased(D data) {
+            return DataLoader.this.isDataReleased(data);
+        }
+
+        @Override
+        protected void releaseData(D data) {
+            DataLoader.this.releaseData(data);
+        }
+    };
 
     public DataLoader(Context context) {
         super(context);
@@ -56,54 +66,31 @@ public abstract class DataLoader<D> extends AsyncTaskLoader<D> {
 
     @Override
     protected void onStartLoading() {
-        if (result != null) {
-            deliverResult(result);
-        }
-        if (takeContentChanged() || result == null) {
-            forceLoad();
-        }
+        delegate.onStartLoading();
     }
 
     @Override
     protected void onStopLoading() {
-        cancelLoad();
+        delegate.onStopLoading();
     }
 
     @Override
     public void onCanceled(D data) {
-        if (data != null && !isDataReleased(data)) {
-            releaseData(data);
-        }
+        delegate.onCanceled(data);
     }
 
     @Override
     public void deliverResult(D data) {
-        if (isReset()) {
-            if (data != null) {
-                releaseData(data);
-            }
-            return;
-        }
-
-        final D oldResult = result;
-        result = data;
-
-        if (isStarted()) {
-            super.deliverResult(data);
-        }
-
-        if (oldResult != null && oldResult != data && !isDataReleased(oldResult)) {
-            releaseData(oldResult);
-        }
+        delegate.deliverResult(data);
     }
 
     @Override
     protected void onReset() {
-        cancelLoad();
+        delegate.onReset();
+    }
 
-        if (result != null && !isDataReleased(result)) {
-            releaseData(result);
-        }
-        result = null;
+    @Override
+    public void superDeliverResult(D data) {
+        super.deliverResult(data);
     }
 }
