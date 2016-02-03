@@ -32,40 +32,17 @@ import android.os.Handler;
  *     <li>Released</li>
  * </ul>
  */
-public abstract class WorkerLoader<D> extends Loader<D> implements LoaderDelegate.SuperCaller<D> {
+public abstract class WorkerLoader<D> extends Loader<D> implements LoaderDelegate.LoaderMethods<D> {
     private final Object lock = new Object();
     private final Handler dispatcher = new Handler();
     private final Worker<D> worker;
     private ResultListener<D> resultListener;
-    private final LoaderDelegate<D, WorkerLoader<D>> delegate = new LoaderDelegate<D, WorkerLoader<D>>(this) {
-        @Override
-        protected boolean isDataReleased(D data) {
-            return WorkerLoader.this.isDataReleased(data);
-        }
-
-        @Override
-        protected void releaseData(D data) {
-            WorkerLoader.this.releaseData(data);
-        }
-    };
+    private final LoaderDelegate<D, WorkerLoader<D>> delegate = new LoaderDelegate<D, WorkerLoader<D>>(this);
 
     public WorkerLoader(Context context, Worker<D> worker) {
         super(context);
         this.worker = worker;
     }
-
-    /**
-     * Reports data {@link D} states to {@link WorkerLoader}.
-     * @param data Data item whose state is being checked.
-     * @return {@code false} for Not Released state. {@code true} for Released state.
-     */
-    protected abstract boolean isDataReleased(D data);
-
-    /**
-     * Transitions data {@link D} from Not Released state to Released state.
-     * @param data Data item whose state is being changed.
-     */
-    protected abstract void releaseData(D data);
 
     @Override
     protected void onStartLoading() {

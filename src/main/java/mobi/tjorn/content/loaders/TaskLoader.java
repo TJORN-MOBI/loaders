@@ -34,35 +34,12 @@ import android.content.Context;
  * If your data {@link D} parameter is always in Released state (e.g., {@link String}),
  * please take a look at {@link SimpleResultLoader} and {@link SimpleResult}.
  */
-public abstract class TaskLoader<D> extends AsyncTaskLoader<D> implements LoaderDelegate.SuperCaller<D> {
-    private final LoaderDelegate<D, TaskLoader<D>> delegate = new LoaderDelegate<D, TaskLoader<D>>(this) {
-        @Override
-        protected boolean isDataReleased(D data) {
-            return TaskLoader.this.isDataReleased(data);
-        }
-
-        @Override
-        protected void releaseData(D data) {
-            TaskLoader.this.releaseData(data);
-        }
-    };
+public abstract class TaskLoader<D> extends AsyncTaskLoader<D> implements LoaderDelegate.LoaderMethods<D> {
+    private final LoaderDelegate<D, TaskLoader<D>> delegate = new LoaderDelegate<D, TaskLoader<D>>(this);
 
     public TaskLoader(Context context) {
         super(context);
     }
-
-    /**
-     * Reports data {@link D} states to {@link TaskLoader}.
-     * @param data Data item whose state is being checked.
-     * @return {@code false} for Not Released state. {@code true} for Released state.
-     */
-    protected abstract boolean isDataReleased(D data);
-
-    /**
-     * Transitions data {@link D} from Not Released state to Released state.
-     * @param data Data item whose state is being changed.
-     */
-    protected abstract void releaseData(D data);
 
     @Override
     protected void onStartLoading() {

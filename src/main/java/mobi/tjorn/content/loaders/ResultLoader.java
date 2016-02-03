@@ -27,12 +27,12 @@ public abstract class ResultLoader<R extends Result> extends TaskLoader<R> {
     }
 
     @Override
-    protected final boolean isDataReleased(R data) {
+    public final boolean isDataReleased(R data) {
         return data.isReleased();
     }
 
     @Override
-    protected final void releaseData(R data) {
+    public final void releaseData(R data) {
         data.release();
     }
 }

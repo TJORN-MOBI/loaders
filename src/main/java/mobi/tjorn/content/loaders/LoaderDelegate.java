@@ -16,32 +16,17 @@
 
 package mobi.tjorn.content.loaders;
 
-import android.content.Loader;
-
 /**
  * A class that implements common loader methods that do not depend
  * on how data are loaded.
  */
-public abstract  class LoaderDelegate<D, L extends Loader<D> & LoaderDelegate.SuperCaller<D>> {
+public class LoaderDelegate<D, L extends android.content.Loader & LoaderDelegate.LoaderMethods<D>> {
     private final L loader;
     private D result;
 
     public LoaderDelegate(L loader) {
         this.loader = loader;
     }
-
-    /**
-     * Reports data {@link D} states to {@link LoaderDelegate}.
-     * @param data Data item whose state is being checked.
-     * @return {@code false} for Not Released state. {@code true} for Released state.
-     */
-    protected abstract boolean isDataReleased(D data);
-
-    /**
-     * Transitions data {@link D} from Not Released state to Released state.
-     * @param data Data item whose state is being changed.
-     */
-    protected abstract void releaseData(D data);
 
     public void onStartLoading() {
         if (result != null) {
@@ -57,15 +42,15 @@ public abstract  class LoaderDelegate<D, L extends Loader<D> & LoaderDelegate.Su
     }
 
     public void onCanceled(D data) {
-        if (data != null && !isDataReleased(data)) {
-            releaseData(data);
+        if (data != null && !loader.isDataReleased(data)) {
+            loader.releaseData(data);
         }
     }
 
     public void deliverResult(D data) {
         if (loader.isReset()) {
             if (data != null) {
-                releaseData(data);
+                loader.releaseData(data);
             }
             return;
         }
@@ -77,21 +62,33 @@ public abstract  class LoaderDelegate<D, L extends Loader<D> & LoaderDelegate.Su
             loader.superDeliverResult(data);
         }
 
-        if (oldResult != null && oldResult != data && !isDataReleased(oldResult)) {
-            releaseData(oldResult);
+        if (oldResult != null && oldResult != data && !loader.isDataReleased(oldResult)) {
+            loader.releaseData(oldResult);
         }
     }
 
     protected void onReset() {
         loader.cancelLoad();
 
-        if (result != null && !isDataReleased(result)) {
-            releaseData(result);
+        if (result != null && !loader.isDataReleased(result)) {
+            loader.releaseData(result);
         }
         result = null;
     }
 
-    public interface SuperCaller<D> {
+    public interface LoaderMethods<D> {
         void superDeliverResult(D data);
+        /**
+         * Reports data {@link D} states to {@link LoaderDelegate}.
+         * @param data Data item whose state is being checked.
+         * @return {@code false} for Not Released state. {@code true} for Released state.
+         */
+        boolean isDataReleased(D data);
+
+        /**
+         * Transitions data {@link D} from Not Released state to Released state.
+         * @param data Data item whose state is being changed.
+         */
+        void releaseData(D data);
     }
 }
