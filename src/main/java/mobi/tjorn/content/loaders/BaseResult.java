@@ -20,35 +20,18 @@ package mobi.tjorn.content.loaders;
  * A simple class that can be used as a {@link Result} of {@link ResultLoader}.  Contains either
  * a {@link BaseResult#data} field or an {@link BaseResult#error} field.
  */
-public abstract class BaseResult<D, T extends Throwable> implements Result {
+public abstract class BaseResult<D, T> implements Result {
     private final D data;
     private final T error;
 
     /**
-     * This constructor is for unrealistic cases where {@link D} extends
-     * a sub-class of {@link Throwable}.
+     * Initializes new result.
      * @param data A value for {@link BaseResult#data} field.
      * @param error A value for {@link BaseResult#error} field.
      */
     protected BaseResult(D data, T error) {
         this.data = data;
         this.error = error;
-    }
-
-    /**
-     * Initializes {@link BaseResult#data} field of {@link BaseResult}.
-     * @param data A value for {@link BaseResult#data} field.
-     */
-    public BaseResult(D data) {
-        this(data, null);
-    }
-
-    /**
-     * Initializes {@link BaseResult#error} field of {@link BaseResult}.
-     * @param error A value for {@link BaseResult#error} field.
-     */
-    public BaseResult(T error) {
-        this(null, error);
     }
 
     /**

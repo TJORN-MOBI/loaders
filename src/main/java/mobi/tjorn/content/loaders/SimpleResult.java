@@ -26,11 +26,11 @@ package mobi.tjorn.content.loaders;
  */
 public class SimpleResult<D> extends BaseResult<D, Throwable> {
     public SimpleResult(D data) {
-        super(data);
+        super(data, null);
     }
 
     public SimpleResult(Throwable error) {
-        super(error);
+        super(null, error);
     }
 
     @Override
