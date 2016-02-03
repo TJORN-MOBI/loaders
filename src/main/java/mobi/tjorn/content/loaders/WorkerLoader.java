@@ -22,7 +22,7 @@ import android.os.Handler;
 /**
  *
  */
-public abstract class WorkerLoader<D> extends BaseLoader<D> {
+public abstract class WorkerLoader<D> extends BaseWorkerLoader<D> {
     private final Object lock = new Object();
     private final Handler dispatcher = new Handler();
     private final Worker<D> worker;
