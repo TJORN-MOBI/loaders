@@ -98,12 +98,48 @@ public abstract class WorkerLoader<D> extends Loader<D> implements LoaderDelegat
         }
     }
 
+    /**
+     * A worker that loads its data on a worker thread.  The worker thread may run
+     * in native code and deliver results through JNI - a scenario the {@link WorkerLoader}
+     * was specifically designed for.
+     * @param <D> Data item to load.
+     */
     public interface Worker<D> {
+        /**
+         * Called on UI thread to start loading data.
+         * @param listener A listener to receive results.
+         */
         void start(ResultListener<D> listener);
+
+        /**
+         * Called on UI thread to cancel loading process.
+         * The implementation may or may not interrupt the worker thread.
+         * The implementation does not have to call {@link ResultListener#onResult(Object)}
+         * after {@link Worker#cancel()} is called; if it does, the result is released
+         * ({@link mobi.tjorn.content.loaders.LoaderDelegate.LoaderMethods#releaseData(Object)})
+         * and ignored (not delivered).
+         */
         void cancel();
     }
 
+    /**
+     * Used by the {@link Worker} to deliver results of loading processes.
+     * @param <D> Loaded data item.
+     */
     public interface ResultListener<D> {
+        /**
+         * <p>
+         * Called by the {@link Worker} to deliver results of loading processes.
+         * If this method is called after {@link Worker#cancel()} is called, the {@code result}
+         * is released
+         * ({@link mobi.tjorn.content.loaders.LoaderDelegate.LoaderMethods#releaseData(Object)})
+         * and ignored (not delivered).
+         * </p>
+         * <p>
+         * It is encouraged to call this method directly on a worker thread.
+         * </p>
+         * @param result Loaded results.
+         */
         void onResult(D result);
     }
 
