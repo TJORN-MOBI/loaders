@@ -73,7 +73,7 @@ public abstract class WorkerLoader<D> extends Loader<D> implements LoaderDelegat
     }
 
     @Override
-    public void superDeliverResult(D data) {
+    public final void superDeliverResult(D data) {
         super.deliverResult(data);
     }
 

@@ -67,7 +67,7 @@ public abstract class TaskLoader<D> extends AsyncTaskLoader<D> implements Loader
     }
 
     @Override
-    public void superDeliverResult(D data) {
+    public final void superDeliverResult(D data) {
         super.deliverResult(data);
     }
 }
