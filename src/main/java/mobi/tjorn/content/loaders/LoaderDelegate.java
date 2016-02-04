@@ -77,7 +77,12 @@ public class LoaderDelegate<D, L extends android.content.Loader & LoaderDelegate
     }
 
     public interface LoaderMethods<D> {
+        /**
+         * Calls {@code super.deliverResult(data)} on {@link LoaderDelegate#loader}.
+         * @param data Result to deliver.
+         */
         void superDeliverResult(D data);
+
         /**
          * Reports data {@link D} states to {@link LoaderDelegate}.
          * @param data Data item whose state is being checked.

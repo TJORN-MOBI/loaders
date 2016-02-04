@@ -17,7 +17,7 @@
 package mobi.tjorn.content.loaders;
 
 /**
- * A simple class that can be used as a {@link Result} of {@link ResultLoader}.  Contains either
+ * A simple class that can be used as a {@link Result} of {@link ResultTaskLoader}.  Contains either
  * a {@link BaseResult#data} field or an {@link BaseResult#error} field.
  */
 public abstract class BaseResult<D, T> implements Result {

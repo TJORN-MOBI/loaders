@@ -31,6 +31,10 @@ import android.os.Handler;
  *     <li>Not Released</li>
  *     <li>Released</li>
  * </ul>
+ * If your data {@link D} parameter does not have a means to report loading error,
+ * you might consider {@link ResultWorkerLoader} and {@link BaseResult}.
+ * If your data {@link D} parameter is always in Released state (e.g., {@link String}),
+ * please take a look at {@link SimpleResultWorkerLoader} and {@link SimpleResult}.
  */
 public abstract class WorkerLoader<D> extends Loader<D> implements LoaderDelegate.LoaderMethods<D> {
     private final Object lock = new Object();

@@ -16,25 +16,23 @@
 
 package mobi.tjorn.content.loaders;
 
-/**
- * A result whose lifecycle is managed by {@link ResultTaskLoader}.
- * The {@link Result} states are:
- * <ul>
- *     <li>Not Released</li>
- *     <li>Released</li>
- * </ul>
- * Implement this interface on your own result if neither {@link BaseResult} nor
- * {@link SimpleResult} fit your requirements.
- */
-public interface Result {
-    /**
-     * Reports result states to {@link ResultTaskLoader}.
-     * @return {@code false} for Not Released state. {@code true} for Released state.
-     */
-    boolean isReleased();
+import android.content.Context;
 
-    /**
-     * Transitions {@link Result} from Not Released state to Released state.
-     */
-    void release();
+/**
+ * A base Loader that manages lifecycle of its {@link Result}.
+ */
+public abstract class ResultWorkerLoader<R extends Result> extends WorkerLoader<R> {
+    protected ResultWorkerLoader(Context context, Worker<R> worker) {
+        super(context, worker);
+    }
+
+    @Override
+    public final boolean isDataReleased(R data) {
+        return data.isReleased();
+    }
+
+    @Override
+    public final void releaseData(R data) {
+        data.release();
+    }
 }

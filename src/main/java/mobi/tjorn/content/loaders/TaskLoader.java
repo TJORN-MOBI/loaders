@@ -30,9 +30,9 @@ import android.content.Context;
  *     <li>Released</li>
  * </ul>
  * If your data {@link D} parameter does not have a means to report loading error,
- * you might consider {@link ResultLoader} and {@link BaseResult}.
+ * you might consider {@link ResultTaskLoader} and {@link BaseResult}.
  * If your data {@link D} parameter is always in Released state (e.g., {@link String}),
- * please take a look at {@link SimpleResultLoader} and {@link SimpleResult}.
+ * please take a look at {@link SimpleResultTaskLoader} and {@link SimpleResult}.
  */
 public abstract class TaskLoader<D> extends AsyncTaskLoader<D> implements LoaderDelegate.LoaderMethods<D> {
     private final LoaderDelegate<D, TaskLoader<D>> delegate = new LoaderDelegate<D, TaskLoader<D>>(this);

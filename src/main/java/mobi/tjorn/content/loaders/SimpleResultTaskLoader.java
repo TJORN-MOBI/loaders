@@ -19,10 +19,10 @@ package mobi.tjorn.content.loaders;
 import android.content.Context;
 
 /**
- * A simple {@link ResultLoader} that manages {@link SimpleResult}.
+ * A simple {@link ResultTaskLoader} that manages {@link SimpleResult}.
  */
-public abstract class SimpleResultLoader<D> extends ResultLoader<SimpleResult<D>> {
-    protected SimpleResultLoader(Context context) {
+public abstract class SimpleResultTaskLoader<D> extends ResultTaskLoader<SimpleResult<D>> {
+    protected SimpleResultTaskLoader(Context context) {
         super(context);
     }
 }
