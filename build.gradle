@@ -1,23 +1,39 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
 
 Properties localProps = new Properties()
 localProps.load(project.rootProject.file('local.properties').newDataInputStream())
 
+group 'mobi.tjorn.content'
+version '1.0.0'
+description 'Almost a drop-in replacement for AsyncTask.'
+
+publishing {
+    publications {
+        loaders(MavenPublication) {
+            artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
+            pom.withXml {
+                asNode().appendNode('description', project.description)
+            }
+        }
+    }
+}
+
 bintray {
     user = localProps.getProperty('bintray.user')
     key = localProps.getProperty('bintray.key')
-    configurations = ['archives']
+    publications = ['loaders']
     pkg {
         repo = 'maven'
         name = 'loaders'
         userOrg = 'tjorn-mobi'
-        desc = 'Almost a drop-in replacement for AsyncTask.'
+        desc = project.description
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/TJORN-MOBI/mobi.tjorn.content.loaders.git'
         publicDownloadNumbers = true
         version {
-            name = '1.0.0'
+            name = project.version
             desc = 'Initial version'
             vcsTag = '1.0.0'
             gpg {
@@ -27,6 +43,8 @@ bintray {
         }
     }
 }
+
+bintrayUpload.dependsOn 'assembleRelease', 'generatePomFileForLoadersPublication'
 
 android {
     compileSdkVersion 23
