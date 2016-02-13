@@ -12,15 +12,22 @@ description 'Almost a drop-in replacement for AsyncTask.'
 task makeReleaseJar(type: Jar) {
     dependsOn 'compileReleaseSources'
     baseName 'loaders'
-    appendix 'release'
     extension 'jar'
     from "$buildDir/intermediates/classes/release"
+}
+
+task makeSourcesJar(type: Jar) {
+    baseName 'loaders'
+    classifier 'sources'
+    extension 'jar'
+    from 'src/main/java'
 }
 
 publishing {
     publications {
         loaders(MavenPublication) {
             artifact makeReleaseJar
+            artifact makeSourcesJar
             pom.withXml {
                 asNode().appendNode('description', project.description)
             }
@@ -52,7 +59,7 @@ bintray {
     }
 }
 
-bintrayUpload.dependsOn makeReleaseJar, 'generatePomFileForLoadersPublication'
+bintrayUpload.dependsOn makeReleaseJar, makeSourcesJar, 'generatePomFileForLoadersPublication'
 
 android {
     compileSdkVersion 23
