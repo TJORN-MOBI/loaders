@@ -9,10 +9,18 @@ group 'mobi.tjorn.content'
 version '1.0.0'
 description 'Almost a drop-in replacement for AsyncTask.'
 
+task makeReleaseJar(type: Jar) {
+    dependsOn 'compileReleaseSources'
+    baseName 'loaders'
+    appendix 'release'
+    extension 'jar'
+    from "$buildDir/intermediates/classes/release"
+}
+
 publishing {
     publications {
         loaders(MavenPublication) {
-            artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
+            artifact makeReleaseJar
             pom.withXml {
                 asNode().appendNode('description', project.description)
             }
@@ -44,7 +52,7 @@ bintray {
     }
 }
 
-bintrayUpload.dependsOn 'assembleRelease', 'generatePomFileForLoadersPublication'
+bintrayUpload.dependsOn makeReleaseJar, 'generatePomFileForLoadersPublication'
 
 android {
     compileSdkVersion 23
@@ -67,3 +75,4 @@ android {
 dependencies {
     testCompile 'junit:junit:4.12'
 }
+
