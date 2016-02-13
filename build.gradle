@@ -5,6 +5,8 @@ apply plugin: 'maven-publish'
 Properties localProps = new Properties()
 localProps.load(project.rootProject.file('local.properties').newDataInputStream())
 
+def androidPlatformVersion = 23
+
 group 'mobi.tjorn.content'
 version '1.0.0'
 description 'Almost a drop-in replacement for AsyncTask.'
@@ -23,11 +25,28 @@ task makeSourcesJar(type: Jar) {
     from 'src/main/java'
 }
 
+task makeJavadocs(type: Javadoc) {
+    source 'src/main/java'
+    destinationDir = file("$buildDir/docs/loaders")
+    options {
+        classpath new File(localProps.get('sdk.dir'), "platforms/android-$androidPlatformVersion/android.jar")
+    }
+}
+
+task makeJavadocsJar(type: Jar) {
+    dependsOn makeJavadocs
+    baseName 'loaders'
+    classifier 'javadoc'
+    extension 'jar'
+    from "$buildDir/docs/loaders"
+}
+
 publishing {
     publications {
         loaders(MavenPublication) {
             artifact makeReleaseJar
             artifact makeSourcesJar
+            artifact makeJavadocsJar
             pom.withXml {
                 asNode().appendNode('description', project.description)
             }
@@ -59,10 +78,10 @@ bintray {
     }
 }
 
-bintrayUpload.dependsOn makeReleaseJar, makeSourcesJar, 'generatePomFileForLoadersPublication'
+bintrayUpload.dependsOn makeReleaseJar, makeSourcesJar, makeJavadocsJar, 'generatePomFileForLoadersPublication'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion androidPlatformVersion
     buildToolsVersion "23.0.2"
 
     defaultConfig {
