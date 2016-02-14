@@ -65,7 +65,7 @@ bintray {
         userOrg = 'tjorn-mobi'
         desc = project.description
         licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/TJORN-MOBI/mobi.tjorn.content.loaders.git'
+        vcsUrl = 'https://github.com/TJORN-MOBI/loaders.git'
         publicDownloadNumbers = true
         version {
             name = project.version
