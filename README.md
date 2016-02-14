@@ -1,4 +1,4 @@
-# mobi.tjorn.content.loaders
+# Loaders
 
 ### What is this?
 Almost a drop-in replacement for [AsyncTask](http://developer.android.com/reference/android/os/AsyncTask.html).
@@ -7,8 +7,7 @@ Almost a drop-in replacement for [AsyncTask](http://developer.android.com/refere
 Many online guides, including [Authorizing with Google for REST APIs](https://developers.google.com/android/guides/http-auth#extend_asynctask_to_get_the_auth_token), use [AsyncTasks](http://developer.android.com/reference/android/os/AsyncTask.html) 
 to perform background operations.
 Unfortunately, [AsyncTasks](http://developer.android.com/reference/android/os/AsyncTask.html) are not
-integrated with [Activity Lifecycle](http://developer.android.com/guide/components/activities.html#Lifecycle).  
-and developers have to write error-prone code to handle Activity pausing, stopping, destruction, configuration changes, etc.
+integrated with [Activity Lifecycle](http://developer.android.com/guide/components/activities.html#Lifecycle) and developers have to write error-prone code to handle Activity pausing, stopping, destruction, configuration changes, etc.
 
 [Loaders](http://developer.android.com/guide/components/loaders.html) are integrated with 
 [Activity Lifecycle](http://developer.android.com/guide/components/activities.html#Lifecycle), 
