@@ -4,11 +4,11 @@
 Almost a drop-in replacement for [AsyncTask](http://developer.android.com/reference/android/os/AsyncTask.html).
 
 ### Introduction
-Many online guides, like [Authorizing with Google for REST APIs](https://developers.google.com/android/guides/http-auth#extend_asynctask_to_get_the_auth_token), use [AsyncTasks](http://developer.android.com/reference/android/os/AsyncTask.html) 
+Many online guides, including [Authorizing with Google for REST APIs](https://developers.google.com/android/guides/http-auth#extend_asynctask_to_get_the_auth_token), use [AsyncTasks](http://developer.android.com/reference/android/os/AsyncTask.html) 
 to perform background operations.
-But the problem with [AsyncTasks](http://developer.android.com/reference/android/os/AsyncTask.html) is that they are not
+Unfortunately, [AsyncTasks](http://developer.android.com/reference/android/os/AsyncTask.html) are not
 integrated with [Activity Lifecycle](http://developer.android.com/guide/components/activities.html#Lifecycle).  
-Developers have to write error-prone code to handle Activity pausing, stopping, destruction, configuration changes, etc.
+and developers have to write error-prone code to handle Activity pausing, stopping, destruction, configuration changes, etc.
 
 [Loaders](http://developer.android.com/guide/components/loaders.html) are integrated with 
 [Activity Lifecycle](http://developer.android.com/guide/components/activities.html#Lifecycle), 
@@ -33,7 +33,7 @@ dependencies {
 }
 ```
 
-### Migrating from [AsyncTask](http://developer.android.com/reference/android/os/AsyncTask.html)s
+### Migrating from [AsyncTasks](http://developer.android.com/reference/android/os/AsyncTask.html)
 1. Subclass one of the Loaders in this library and, optionally, one of the Resutls.
 2. In your existing code, move code
   - from [AsyncTask.onPreExecute](http://developer.android.com/reference/android/os/AsyncTask.html#onPreExecute()) to 
