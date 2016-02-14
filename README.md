@@ -17,7 +17,23 @@ except [CursorLoader](http://developer.android.com/reference/android/content/Cur
 [Loaders](http://developer.android.com/guide/components/loaders.html) are not as easy to create and use as [AsyncTasks](http://developer.android.com/reference/android/os/AsyncTask.html).
 This library attempts to make [Loaders](http://developer.android.com/guide/components/loaders.html) easy to use.
 
-### How to use
+### Using in Android Studio / Gradle
+
+```
+buildscript {
+    repositories {
+        jcenter()
+    }
+}
+```
+
+```
+dependencies {
+    compile 'mobi.tjorn.content:loaders:1.0.0'
+}
+```
+
+### Migrating from [AsyncTask](http://developer.android.com/reference/android/os/AsyncTask.html)s
 1. Subclass one of the Loaders in this library and, optionally, one of the Resutls.
 2. In your existing code, move code
   - from [AsyncTask.onPreExecute](http://developer.android.com/reference/android/os/AsyncTask.html#onPreExecute()) to 
