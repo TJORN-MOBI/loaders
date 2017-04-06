@@ -18,6 +18,11 @@ package mobi.tjorn.content.loaders;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
+import android.os.Build;
+
+import mobi.tjorn.common.BaseResult;
+import mobi.tjorn.common.LoaderDelegate;
+import mobi.tjorn.common.SimpleResult;
 
 /**
  * A loader that extends {@link android.content.AsyncTaskLoader}
@@ -35,7 +40,7 @@ import android.content.Context;
  * please take a look at {@link SimpleResultTaskLoader} and {@link SimpleResult}.
  */
 public abstract class TaskLoader<D> extends AsyncTaskLoader<D> implements LoaderDelegate.LoaderMethods<D> {
-    private final LoaderDelegate<D, TaskLoader<D>> delegate = new LoaderDelegate<D, TaskLoader<D>>(this);
+    private final LoaderDelegate<D> delegate = new LoaderDelegate<>(this);
 
     public TaskLoader(Context context) {
         super(context);
@@ -69,5 +74,14 @@ public abstract class TaskLoader<D> extends AsyncTaskLoader<D> implements Loader
     @Override
     public final void superDeliverResult(D data) {
         super.deliverResult(data);
+    }
+
+    @Override
+    public boolean cancelLoadCompat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            return cancelLoad();
+        } else {
+            return onCancelLoad();
+        }
     }
 }

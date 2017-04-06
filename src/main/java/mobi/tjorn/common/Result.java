@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package mobi.tjorn.content.loaders;
+package mobi.tjorn.common;
+
+import mobi.tjorn.content.loaders.ResultTaskLoader;
 
 /**
  * A result whose lifecycle is managed by {@link ResultTaskLoader}.

@@ -18,6 +18,8 @@ package mobi.tjorn.content.loaders;
 
 import android.content.Context;
 
+import mobi.tjorn.common.Result;
+
 /**
  * A base Loader that manages lifecycle of its {@link Result}.
  */

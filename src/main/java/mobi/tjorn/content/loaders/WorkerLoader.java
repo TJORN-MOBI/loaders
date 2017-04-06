@@ -18,7 +18,12 @@ package mobi.tjorn.content.loaders;
 
 import android.content.Context;
 import android.content.Loader;
+import android.os.Build;
 import android.os.Handler;
+
+import mobi.tjorn.common.BaseResult;
+import mobi.tjorn.common.LoaderDelegate;
+import mobi.tjorn.common.SimpleResult;
 
 /**
  * A loader that extends {@link android.content.Loader} and uses
@@ -28,8 +33,8 @@ import android.os.Handler;
  * This loader manages lifecycle of its data {@link D} parameter.
  * The data {@link D} states are:
  * <ul>
- *     <li>Not Released</li>
- *     <li>Released</li>
+ * <li>Not Released</li>
+ * <li>Released</li>
  * </ul>
  * If your data {@link D} parameter does not have a means to report loading error,
  * you might consider {@link ResultWorkerLoader} and {@link BaseResult}.
@@ -41,7 +46,7 @@ public abstract class WorkerLoader<D> extends Loader<D> implements LoaderDelegat
     private final Handler dispatcher = new Handler();
     private final Worker<D> worker;
     private ResultListener<D> resultListener;
-    private final LoaderDelegate<D, WorkerLoader<D>> delegate = new LoaderDelegate<D, WorkerLoader<D>>(this);
+    private final LoaderDelegate<D> delegate = new LoaderDelegate<D>(this);
 
     public WorkerLoader(Context context, Worker<D> worker) {
         super(context);
@@ -79,7 +84,7 @@ public abstract class WorkerLoader<D> extends Loader<D> implements LoaderDelegat
 
     @Override
     protected void onForceLoad() {
-        cancelLoad();
+        cancelLoadCompat();
         synchronized (lock) {
             resultListener = new ResultListenerImpl();
             worker.start(resultListener);
@@ -98,15 +103,26 @@ public abstract class WorkerLoader<D> extends Loader<D> implements LoaderDelegat
         }
     }
 
+    @Override
+    public boolean cancelLoadCompat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            return cancelLoad();
+        } else {
+            return onCancelLoad();
+        }
+    }
+
     /**
      * A worker that loads its data on a worker thread.  The worker thread may run
      * in native code and deliver results through JNI - a scenario the {@link WorkerLoader}
      * was specifically designed for.
+     *
      * @param <D> Data item to load.
      */
     public interface Worker<D> {
         /**
          * Called on UI thread to start loading data.
+         *
          * @param listener A listener to receive results.
          */
         void start(ResultListener<D> listener);
@@ -116,7 +132,7 @@ public abstract class WorkerLoader<D> extends Loader<D> implements LoaderDelegat
          * The implementation may or may not interrupt the worker thread.
          * The implementation does not have to call {@link ResultListener#onResult(Object)}
          * after {@link Worker#cancel()} is called; if it does, the result is released
-         * ({@link mobi.tjorn.content.loaders.LoaderDelegate.LoaderMethods#releaseData(Object)})
+         * ({@link LoaderDelegate.LoaderMethods#releaseData(Object)})
          * and ignored (not delivered).
          */
         void cancel();
@@ -124,6 +140,7 @@ public abstract class WorkerLoader<D> extends Loader<D> implements LoaderDelegat
 
     /**
      * Used by the {@link Worker} to deliver results of loading processes.
+     *
      * @param <D> Loaded data item.
      */
     public interface ResultListener<D> {
@@ -132,12 +149,13 @@ public abstract class WorkerLoader<D> extends Loader<D> implements LoaderDelegat
          * Called by the {@link Worker} to deliver results of loading processes.
          * If this method is called after {@link Worker#cancel()} is called, the {@code result}
          * is released
-         * ({@link mobi.tjorn.content.loaders.LoaderDelegate.LoaderMethods#releaseData(Object)})
+         * ({@link LoaderDelegate.LoaderMethods#releaseData(Object)})
          * and ignored (not delivered).
          * </p>
          * <p>
          * It is encouraged to call this method directly on a worker thread.
          * </p>
+         *
          * @param result Loaded results.
          */
         void onResult(D result);

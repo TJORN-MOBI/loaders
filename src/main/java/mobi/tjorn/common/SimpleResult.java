@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package mobi.tjorn.content.loaders;
+package mobi.tjorn.common;
 
 /**
  *  A simple {@link BaseResult} that can be only in Released state.  Examples:
