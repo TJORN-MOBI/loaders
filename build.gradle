@@ -1,11 +1,14 @@
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+    id "maven-publish"
+}
+
 apply plugin: 'com.android.library'
-apply plugin: 'com.jfrog.bintray'
-apply plugin: 'maven-publish'
 
 def localProps = new Properties()
 localProps.load(project.rootProject.file('local.properties').newDataInputStream())
 
-def androidPlatformVersion = 23
+def androidPlatformVersion = 25
 
 group 'mobi.tjorn.content'
 version '1.0.0'
@@ -83,11 +86,11 @@ bintrayUpload.dependsOn makeReleaseJar, makeSourcesJar, makeJavadocsJar, 'genera
 
 android {
     compileSdkVersion androidPlatformVersion
-    buildToolsVersion "23.0.2"
+    buildToolsVersion androidPlatformVersion + ".0.0"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion androidPlatformVersion
         versionCode 1
         versionName "1.0"
     }
