@@ -14,37 +14,40 @@
  * limitations under the License.
  */
 
-package mobi.tjorn.content.loaders;
+package mobi.tjorn.support.content.loaders;
 
-import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.content.Loader;
 
 import mobi.tjorn.common.BaseResult;
 import mobi.tjorn.common.SimpleResult;
-import mobi.tjorn.common.TaskLoaderDelegate;
+import mobi.tjorn.common.WorkerLoaderDelegate;
+import mobi.tjorn.content.loaders.ResultWorkerLoader;
+import mobi.tjorn.content.loaders.SimpleResultWorkerLoader;
 
 /**
- * A loader that extends {@link android.content.AsyncTaskLoader}
- * and uses {@link android.os.AsyncTask} to load its data.
- * The data is loaded by {@link AsyncTaskLoader#loadInBackground()} method.
- * This loader that manages lifecycle of its data {@link D} parameter.
+ * A loader that extends {@link Loader} and uses
+ * {@link WorkerLoaderDelegate.Worker} to load its data.
+ * The actual load happens on some worker thread.  The worker thread
+ * may even run in native code and results can be delivered through JNI.
+ * This loader manages lifecycle of its data {@link D} parameter.
  * The data {@link D} states are:
  * <ul>
  * <li>Not Released</li>
  * <li>Released</li>
  * </ul>
  * If your data {@link D} parameter does not have a means to report loading error,
- * you might consider {@link ResultTaskLoader} and {@link BaseResult}.
+ * you might consider {@link ResultWorkerLoader} and {@link BaseResult}.
  * If your data {@link D} parameter is always in Released state (e.g., {@link String}),
- * please take a look at {@link SimpleResultTaskLoader} and {@link SimpleResult}.
+ * please take a look at {@link SimpleResultWorkerLoader} and {@link SimpleResult}.
  */
-public abstract class TaskLoader<D> extends AsyncTaskLoader<D> implements TaskLoaderDelegate.TaskLoaderMethods<D> {
-    private final TaskLoaderDelegate<D, TaskLoaderDelegate.TaskLoaderMethods<D>> delegate;
+public abstract class WorkerLoader<D> extends Loader<D> implements WorkerLoaderDelegate.WorkerLoaderMethods<D> {
+    private final WorkerLoaderDelegate<D, WorkerLoaderDelegate.WorkerLoaderMethods<D>> delegate;
 
-    public TaskLoader(Context context) {
+    public WorkerLoader(Context context, WorkerLoaderDelegate.Worker<D> worker) {
         super(context);
-        this.delegate = new TaskLoaderDelegate<D, TaskLoaderDelegate.TaskLoaderMethods<D>>(this);
+        this.delegate = new WorkerLoaderDelegate<D, WorkerLoaderDelegate.WorkerLoaderMethods<D>>(this, worker);
     }
 
     @Override
@@ -57,7 +60,6 @@ public abstract class TaskLoader<D> extends AsyncTaskLoader<D> implements TaskLo
         delegate.onStopLoading();
     }
 
-    @Override
     public void onCanceled(D data) {
         delegate.onCanceled(data);
     }
@@ -75,6 +77,16 @@ public abstract class TaskLoader<D> extends AsyncTaskLoader<D> implements TaskLo
     @Override
     public final void superDeliverResult(D data) {
         super.deliverResult(data);
+    }
+
+    @Override
+    protected void onForceLoad() {
+        delegate.onForceLoad();
+    }
+
+    @Override
+    protected boolean onCancelLoad() {
+        return delegate.onCancelLoad();
     }
 
     @Override

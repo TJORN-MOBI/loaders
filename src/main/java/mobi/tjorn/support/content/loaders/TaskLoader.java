@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package mobi.tjorn.content.loaders;
+package mobi.tjorn.support.content.loaders;
 
-import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.content.AsyncTaskLoader;
 
 import mobi.tjorn.common.BaseResult;
 import mobi.tjorn.common.SimpleResult;
 import mobi.tjorn.common.TaskLoaderDelegate;
+import mobi.tjorn.content.loaders.ResultTaskLoader;
+import mobi.tjorn.content.loaders.SimpleResultTaskLoader;
 
 /**
- * A loader that extends {@link android.content.AsyncTaskLoader}
+ * A loader that extends {@link AsyncTaskLoader}
  * and uses {@link android.os.AsyncTask} to load its data.
  * The data is loaded by {@link AsyncTaskLoader#loadInBackground()} method.
  * This loader that manages lifecycle of its data {@link D} parameter.

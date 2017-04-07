@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package mobi.tjorn.content.loaders;
+package mobi.tjorn.support.content.loaders;
 
 import android.content.Context;
 

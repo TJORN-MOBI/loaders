@@ -14,18 +14,28 @@
  * limitations under the License.
  */
 
-package mobi.tjorn.content.loaders;
+package mobi.tjorn.support.content.loaders;
 
 import android.content.Context;
 
-import mobi.tjorn.common.SimpleResult;
-import mobi.tjorn.common.WorkerLoaderDelegate;
+import mobi.tjorn.common.Result;
+import mobi.tjorn.content.loaders.TaskLoader;
 
 /**
- * A simple {@link ResultWorkerLoader} that manages {@link SimpleResult}.
+ * A base Loader that manages lifecycle of its {@link Result}.
  */
-public abstract class SimpleResultWorkerLoader<D> extends ResultWorkerLoader<SimpleResult<D>> {
-    protected SimpleResultWorkerLoader(Context context, WorkerLoaderDelegate.Worker<SimpleResult<D>> worker) {
-        super(context, worker);
+public abstract class ResultTaskLoader<R extends Result> extends TaskLoader<R> {
+    protected ResultTaskLoader(Context context) {
+        super(context);
+    }
+
+    @Override
+    public final boolean isDataReleased(R data) {
+        return data.isReleased();
+    }
+
+    @Override
+    public final void releaseData(R data) {
+        data.release();
     }
 }

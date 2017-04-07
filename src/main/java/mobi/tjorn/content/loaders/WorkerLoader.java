@@ -19,15 +19,14 @@ package mobi.tjorn.content.loaders;
 import android.content.Context;
 import android.content.Loader;
 import android.os.Build;
-import android.os.Handler;
 
 import mobi.tjorn.common.BaseResult;
-import mobi.tjorn.common.LoaderDelegate;
 import mobi.tjorn.common.SimpleResult;
+import mobi.tjorn.common.WorkerLoaderDelegate;
 
 /**
  * A loader that extends {@link android.content.Loader} and uses
- * {@link Worker} to load its data.
+ * {@link WorkerLoaderDelegate.Worker} to load its data.
  * The actual load happens on some worker thread.  The worker thread
  * may even run in native code and results can be delivered through JNI.
  * This loader manages lifecycle of its data {@link D} parameter.
@@ -41,16 +40,12 @@ import mobi.tjorn.common.SimpleResult;
  * If your data {@link D} parameter is always in Released state (e.g., {@link String}),
  * please take a look at {@link SimpleResultWorkerLoader} and {@link SimpleResult}.
  */
-public abstract class WorkerLoader<D> extends Loader<D> implements LoaderDelegate.LoaderMethods<D> {
-    private final Object lock = new Object();
-    private final Handler dispatcher = new Handler();
-    private final Worker<D> worker;
-    private ResultListener<D> resultListener;
-    private final LoaderDelegate<D> delegate = new LoaderDelegate<D>(this);
+public abstract class WorkerLoader<D> extends Loader<D> implements WorkerLoaderDelegate.WorkerLoaderMethods<D> {
+    private final WorkerLoaderDelegate<D, WorkerLoaderDelegate.WorkerLoaderMethods<D>> delegate;
 
-    public WorkerLoader(Context context, Worker<D> worker) {
+    public WorkerLoader(Context context, WorkerLoaderDelegate.Worker<D> worker) {
         super(context);
-        this.worker = worker;
+        this.delegate = new WorkerLoaderDelegate<D, WorkerLoaderDelegate.WorkerLoaderMethods<D>>(this, worker);
     }
 
     @Override
@@ -84,23 +79,12 @@ public abstract class WorkerLoader<D> extends Loader<D> implements LoaderDelegat
 
     @Override
     protected void onForceLoad() {
-        cancelLoadCompat();
-        synchronized (lock) {
-            resultListener = new ResultListenerImpl();
-            worker.start(resultListener);
-        }
+        delegate.onForceLoad();
     }
 
     @Override
     protected boolean onCancelLoad() {
-        synchronized (lock) {
-            if (resultListener != null) {
-                worker.cancel();
-                resultListener = null;
-                return true;
-            }
-            return false;
-        }
+        return delegate.onCancelLoad();
     }
 
     @Override
@@ -109,75 +93,6 @@ public abstract class WorkerLoader<D> extends Loader<D> implements LoaderDelegat
             return cancelLoad();
         } else {
             return onCancelLoad();
-        }
-    }
-
-    /**
-     * A worker that loads its data on a worker thread.  The worker thread may run
-     * in native code and deliver results through JNI - a scenario the {@link WorkerLoader}
-     * was specifically designed for.
-     *
-     * @param <D> Data item to load.
-     */
-    public interface Worker<D> {
-        /**
-         * Called on UI thread to start loading data.
-         *
-         * @param listener A listener to receive results.
-         */
-        void start(ResultListener<D> listener);
-
-        /**
-         * Called on UI thread to cancel loading process.
-         * The implementation may or may not interrupt the worker thread.
-         * The implementation does not have to call {@link ResultListener#onResult(Object)}
-         * after {@link Worker#cancel()} is called; if it does, the result is released
-         * ({@link LoaderDelegate.LoaderMethods#releaseData(Object)})
-         * and ignored (not delivered).
-         */
-        void cancel();
-    }
-
-    /**
-     * Used by the {@link Worker} to deliver results of loading processes.
-     *
-     * @param <D> Loaded data item.
-     */
-    public interface ResultListener<D> {
-        /**
-         * <p>
-         * Called by the {@link Worker} to deliver results of loading processes.
-         * If this method is called after {@link Worker#cancel()} is called, the {@code result}
-         * is released
-         * ({@link LoaderDelegate.LoaderMethods#releaseData(Object)})
-         * and ignored (not delivered).
-         * </p>
-         * <p>
-         * It is encouraged to call this method directly on a worker thread.
-         * </p>
-         *
-         * @param result Loaded results.
-         */
-        void onResult(D result);
-    }
-
-    private class ResultListenerImpl implements ResultListener<D> {
-        @Override
-        public void onResult(final D result) {
-            synchronized (lock) {
-                final boolean canceled = this != resultListener;
-                resultListener = null;
-                dispatcher.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (canceled) {
-                            onCanceled(result);
-                        } else {
-                            deliverResult(result);
-                        }
-                    }
-                });
-            }
         }
     }
 }

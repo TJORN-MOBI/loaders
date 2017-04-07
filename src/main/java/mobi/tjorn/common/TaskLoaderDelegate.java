@@ -20,11 +20,11 @@ package mobi.tjorn.common;
  * A class that implements common loader methods that do not depend
  * on how data are loaded.
  */
-public class LoaderDelegate<D> {
-    private final LoaderDelegate.LoaderMethods<D> loader;
-    private D result;
+public class TaskLoaderDelegate<D, LM extends TaskLoaderDelegate.TaskLoaderMethods<D>> {
+    protected final LM loader;
+    protected D result;
 
-    public LoaderDelegate(LoaderDelegate.LoaderMethods<D> loader) {
+    public TaskLoaderDelegate(LM loader) {
         this.loader = loader;
     }
 
@@ -79,16 +79,16 @@ public class LoaderDelegate<D> {
     /**
      *
      */
-    public static interface LoaderMethods<D> {
+    public interface TaskLoaderMethods<D> {
         /**
-         * Calls {@code super.deliverResult(data)} on {@link LoaderDelegate#loader}.
+         * Calls {@code super.deliverResult(data)} on {@link TaskLoaderDelegate#loader}.
          *
          * @param data Result to deliver.
          */
         void superDeliverResult(D data);
 
         /**
-         * Reports data {@link D} states to {@link LoaderDelegate}.
+         * Reports data {@link D} states to {@link TaskLoaderDelegate}.
          *
          * @param data Data item whose state is being checked.
          * @return {@code false} for Not Released state. {@code true} for Released state.
