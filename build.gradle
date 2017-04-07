@@ -34,7 +34,11 @@ task makeJavadocs(type: Javadoc) {
     source 'src/main/java'
     destinationDir = file("$buildDir/docs/loaders")
     options {
-        classpath new File(localProps.get('sdk.dir'), "platforms/android-$androidPlatformVersion/android.jar")
+        classpath new File(localProps.get('sdk.dir'), "platforms/android-${androidPlatformVersion}/android.jar")
+    }
+    // Make sure JavaDoc sees support libraries
+    android.libraryVariants.all { variant ->
+        owner.classpath += variant.javaCompile.classpath
     }
 }
 

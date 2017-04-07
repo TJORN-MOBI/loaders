@@ -114,6 +114,8 @@ public class TaskLoaderDelegate<D, LM extends TaskLoaderDelegate.TaskLoaderMetho
          * Take the current flag indicating whether the loader's content had
          * changed while it was stopped.  If it had, true is returned and the
          * flag is cleared.
+         *
+         * @return {@code true} if the loader's content had changed while it was stopped
          */
         boolean takeContentChanged();
 
@@ -128,6 +130,8 @@ public class TaskLoaderDelegate<D, LM extends TaskLoaderDelegate.TaskLoaderMetho
 
         /**
          * Return whether this load has been started.
+         *
+         * @return {@code true} if this load has been started
          */
         boolean isStarted();
 
@@ -135,14 +139,16 @@ public class TaskLoaderDelegate<D, LM extends TaskLoaderDelegate.TaskLoaderMetho
          * Return whether this load has been reset.  That is, either the loader
          * has not yet been started for the first time, or its reset()
          * has been called.
+         *
+         * @return {@code true} if this load has been reset.
          */
         boolean isReset();
 
         /**
          * Attempt to cancel the current load task.
          * Must be called on the main thread of the process.
-         *
-         * <p>Cancellation is not an immediate operation, since the load is performed
+         * <p>
+         * Cancellation is not an immediate operation, since the load is performed
          * in a background thread.  If there is currently a load in progress, this
          * method requests that the load be canceled, and notes this is the case;
          * once the background thread has completed its work its remaining state
