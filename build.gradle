@@ -9,6 +9,7 @@ def localProps = new Properties()
 localProps.load(project.rootProject.file('local.properties').newDataInputStream())
 
 def androidPlatformVersion = 25
+def androidSupportLibraryVersion = "${androidPlatformVersion}.3.1"
 
 group 'mobi.tjorn.content'
 version '1.0.0'
@@ -86,7 +87,7 @@ bintrayUpload.dependsOn makeReleaseJar, makeSourcesJar, makeJavadocsJar, 'genera
 
 android {
     compileSdkVersion androidPlatformVersion
-    buildToolsVersion androidPlatformVersion + ".0.0"
+    buildToolsVersion "${androidPlatformVersion}.0.0"
 
     defaultConfig {
         minSdkVersion 14
@@ -103,6 +104,7 @@ android {
 }
 
 dependencies {
+    compile "com.android.support:support-core-utils:${androidSupportLibraryVersion}"
     testCompile 'junit:junit:4.12'
 }
 
