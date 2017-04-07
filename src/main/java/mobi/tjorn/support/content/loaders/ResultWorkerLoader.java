@@ -20,7 +20,6 @@ import android.content.Context;
 
 import mobi.tjorn.common.Result;
 import mobi.tjorn.common.WorkerLoaderDelegate;
-import mobi.tjorn.content.loaders.WorkerLoader;
 
 /**
  * A base Loader that manages lifecycle of its {@link Result}.
