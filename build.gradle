@@ -91,7 +91,7 @@ bintrayUpload.dependsOn makeReleaseJar, makeSourcesJar, makeJavadocsJar, 'genera
 
 android {
     compileSdkVersion androidPlatformVersion
-    buildToolsVersion "${androidPlatformVersion}.0.0"
+    buildToolsVersion "${androidPlatformVersion}.0.2"
 
     defaultConfig {
         minSdkVersion 14
