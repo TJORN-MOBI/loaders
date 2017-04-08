@@ -12,7 +12,7 @@ def androidPlatformVersion = 25
 def androidSupportLibraryVersion = "${androidPlatformVersion}.3.1"
 
 group 'mobi.tjorn.content'
-version '1.0.0'
+version '1.2.0'
 description 'Almost a drop-in replacement for AsyncTask.'
 
 task makeReleaseJar(type: Jar) {
@@ -80,8 +80,8 @@ bintray {
         publicDownloadNumbers = true
         version {
             name = project.version
-            desc = 'Initial version'
-            vcsTag = '1.0.0'
+            desc = 'Now works with com.android.support loaders.'
+            vcsTag = version
             gpg {
                 sign = true
                 passphrase = localProps.getProperty('bintray.gpg.passphrase')
@@ -99,8 +99,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion androidPlatformVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName version
     }
     buildTypes {
         release {
