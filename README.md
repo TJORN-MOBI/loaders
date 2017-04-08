@@ -1,8 +1,9 @@
 # Loaders
-
-### What is this?
+## What is this?
 Almost a drop-in replacement for [AsyncTask](http://developer.android.com/reference/android/os/AsyncTask.html). As of version 1.2.0, the library also works with Loaders from Android support library.
-### Introduction
+## A sample application
+Please take a look at [a sample application][SampleApp] to quickly get started with the library.
+## Introduction
 Many online guides, including [Authorizing with Google for REST APIs](https://developers.google.com/android/guides/http-auth#extend_asynctask_to_get_the_auth_token), use [AsyncTasks](http://developer.android.com/reference/android/os/AsyncTask.html)
 to perform background operations.
 Unfortunately, [AsyncTasks](http://developer.android.com/reference/android/os/AsyncTask.html) are not
@@ -27,7 +28,7 @@ dependencies {
     compile 'mobi.tjorn.content:loaders:1.2.0'
 }
 ```
-#### Support library note
+### Support library note
 The binary distribution is packaged as a JAR file that does not have a dependency on a specific Android support library. If you are planning to use [loaders from the support package](src/main/java/mobi/tjorn/support/content/loaders), add dependency on Android support library to your build.gradle file.  For example:
 ```
 dependencies {
@@ -35,7 +36,7 @@ dependencies {
     compile 'com.android.support:support-core-utils:25.3.1'
 }
 ```
-### Migrating from [AsyncTasks](http://developer.android.com/reference/android/os/AsyncTask.html)
+## Migrating from [AsyncTasks](http://developer.android.com/reference/android/os/AsyncTask.html)
 1. Subclass one of the Loaders in this library and, optionally, one of the Resutls.
 2. In your existing code, move code
   - from [AsyncTask.onPreExecute](http%3A%2F%2Fdeveloper.android.com%2Freference%2Fandroid%2Fos%2FAsyncTask.html%23onPreExecute()) to [LoaderCallbacks.onCreateLoader](http%3A%2F%2Fdeveloper.android.com%2Freference%2Fandroid%2Fapp%2FLoaderManager.LoaderCallbacks.html%23onCreateLoader(int%2C%20android.os.Bundle))
@@ -45,7 +46,7 @@ dependencies {
 [Activities](http://developer.android.com/reference/android/app/Activity.html) or [Fragments](http://developer.android.com/reference/android/app/Fragment.html).
 [Loaders](http://developer.android.com/guide/components/loaders.html) are already integrated with [Activity Lifecycle](http://developer.android.com/guide/components/activities.html#Lifecycle).
 
-### Example
+## Example
 We convert [Getting Auth Token](https://developers.google.com/android/guides/http-auth#extend_asynctask_to_get_the_auth_token) sample.  First, we create our TokenLoader:
 ```
 private static class TokenLoader extends SimpleResultLoader<String> {
@@ -108,3 +109,5 @@ public void onLoaderReset(Loader<SimpleResult<String>> loader) {
 Now we can call our error handler on UI thread to deal with
 [UserRecoverableAuthException](https://developers.google.com/android/reference/com/google/android/gms/auth/UserRecoverableAuthException)
 or [GoogleAuthException](https://developers.google.com/android/reference/com/google/android/gms/auth/GoogleAuthException).
+
+[SampleApp]: https://github.com/TJORN-MOBI/loaders-sample
