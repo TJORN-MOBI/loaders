@@ -6,7 +6,7 @@ plugins {
 apply plugin: 'com.android.library'
 
 def localProps = new Properties()
-localProps.load(project.rootProject.file('local.properties').newDataInputStream())
+localProps.load(project.file('local.properties').newDataInputStream())
 
 def androidPlatformVersion = 25
 def androidSupportLibraryVersion = "${androidPlatformVersion}.3.1"
