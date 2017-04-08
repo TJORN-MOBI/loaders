@@ -20,7 +20,10 @@ task makeReleaseJar(type: Jar) {
     baseName 'loaders'
     extension 'jar'
     from "$buildDir/intermediates/classes/release"
-    exclude 'mobi/tjorn/content/loaders/R.class', 'mobi/tjorn/content/loaders/R$*.class'
+    exclude 'android',
+            'mobi/tjorn/content/loaders/BuildConfig.class',
+            'mobi/tjorn/content/loaders/R.class',
+            'mobi/tjorn/content/loaders/R$*.class'
 }
 
 task makeSourcesJar(type: Jar) {
