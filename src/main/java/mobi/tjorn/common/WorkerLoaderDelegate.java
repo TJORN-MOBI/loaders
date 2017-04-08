@@ -6,9 +6,9 @@ import android.os.OperationCanceledException;
 import mobi.tjorn.content.loaders.WorkerLoader;
 
 /**
- *
+ * A class that implements common worker loader methods that do not depend
+ * on how data are loaded.
  */
-
 public class WorkerLoaderDelegate<D, LM extends WorkerLoaderDelegate.WorkerLoaderMethods<D>> extends TaskLoaderDelegate<D, LM> {
     private final Object lock = new Object();
     private final Handler dispatcher = new Handler();

@@ -17,7 +17,7 @@
 package mobi.tjorn.common;
 
 /**
- * A class that implements common loader methods that do not depend
+ * A class that implements common task loader methods that do not depend
  * on how data are loaded.
  */
 public class TaskLoaderDelegate<D, LM extends TaskLoaderDelegate.TaskLoaderMethods<D>> {
