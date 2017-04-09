@@ -16,10 +16,8 @@
 
 package mobi.tjorn.common;
 
-import mobi.tjorn.content.loaders.ResultTaskLoader;
-
 /**
- * A result whose lifecycle is managed by {@link ResultTaskLoader}.
+ * A result whose lifecycle is managed by Result* Loaders.
  * The {@link Result} states are:
  * <ul>
  *     <li>Not Released</li>
@@ -30,7 +28,7 @@ import mobi.tjorn.content.loaders.ResultTaskLoader;
  */
 public interface Result {
     /**
-     * Reports result states to {@link ResultTaskLoader}.
+     * Reports result states to Result* Loaders.
      * @return {@code false} for Not Released state. {@code true} for Released state.
      */
     boolean isReleased();

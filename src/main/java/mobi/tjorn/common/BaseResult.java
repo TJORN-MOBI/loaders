@@ -16,10 +16,8 @@
 
 package mobi.tjorn.common;
 
-import mobi.tjorn.content.loaders.ResultTaskLoader;
-
 /**
- * A simple class that can be used as a {@link Result} of {@link ResultTaskLoader}.  Contains either
+ * A simple class that can be used as a {@link Result} of Result* Loaders.  Contains either
  * a {@link BaseResult#data} field or an {@link BaseResult#error} field.
  */
 public abstract class BaseResult<D, T> implements Result {
@@ -28,7 +26,8 @@ public abstract class BaseResult<D, T> implements Result {
 
     /**
      * Initializes new result.
-     * @param data A value for {@link BaseResult#data} field.
+     *
+     * @param data  A value for {@link BaseResult#data} field.
      * @param error A value for {@link BaseResult#error} field.
      */
     protected BaseResult(D data, T error) {
@@ -38,6 +37,7 @@ public abstract class BaseResult<D, T> implements Result {
 
     /**
      * Returns value of {@link BaseResult#data} field.
+     *
      * @return Value of {@link BaseResult#data} field.
      */
     public D getData() {
@@ -46,6 +46,7 @@ public abstract class BaseResult<D, T> implements Result {
 
     /**
      * Returns value of {@link BaseResult#error} field.
+     *
      * @return Value of {@link BaseResult#error} field.
      */
     public T getError() {
@@ -54,6 +55,7 @@ public abstract class BaseResult<D, T> implements Result {
 
     /**
      * Checks if {@link BaseResult} has a non-{@code null} {@link BaseResult#error} field.
+     *
      * @return {@code true} if {@link BaseResult#error} is not {@code null},
      * {@code false} otherwise.
      */
