@@ -18,8 +18,8 @@ package mobi.tjorn.support.content.loaders;
 
 import android.content.Context;
 
-import mobi.tjorn.common.SimpleResult;
-import mobi.tjorn.common.WorkerLoaderDelegate;
+import mobi.tjorn.content.common.SimpleResult;
+import mobi.tjorn.content.common.WorkerLoaderDelegate;
 
 /**
  * A simple {@link ResultWorkerLoader} that manages {@link SimpleResult}.

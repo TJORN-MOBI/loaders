@@ -1,4 +1,4 @@
-package mobi.tjorn.common;
+package mobi.tjorn.content.common;
 
 import android.os.Handler;
 import android.os.OperationCanceledException;

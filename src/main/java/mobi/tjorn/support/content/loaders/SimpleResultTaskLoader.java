@@ -18,7 +18,7 @@ package mobi.tjorn.support.content.loaders;
 
 import android.content.Context;
 
-import mobi.tjorn.common.SimpleResult;
+import mobi.tjorn.content.common.SimpleResult;
 
 /**
  * A simple {@link ResultTaskLoader} that manages {@link SimpleResult}.

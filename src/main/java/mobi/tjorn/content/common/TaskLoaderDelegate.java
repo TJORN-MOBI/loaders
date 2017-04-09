@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package mobi.tjorn.common;
+package mobi.tjorn.content.common;
 
 /**
  * A class that implements common task loader methods that do not depend

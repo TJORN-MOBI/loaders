@@ -20,9 +20,9 @@ import android.content.Context;
 import android.os.Build;
 import android.support.v4.content.Loader;
 
-import mobi.tjorn.common.BaseResult;
-import mobi.tjorn.common.SimpleResult;
-import mobi.tjorn.common.WorkerLoaderDelegate;
+import mobi.tjorn.content.common.BaseResult;
+import mobi.tjorn.content.common.SimpleResult;
+import mobi.tjorn.content.common.WorkerLoaderDelegate;
 import mobi.tjorn.content.loaders.ResultWorkerLoader;
 import mobi.tjorn.content.loaders.SimpleResultWorkerLoader;
 

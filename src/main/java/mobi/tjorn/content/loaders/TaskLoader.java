@@ -20,9 +20,9 @@ import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.os.Build;
 
-import mobi.tjorn.common.BaseResult;
-import mobi.tjorn.common.SimpleResult;
-import mobi.tjorn.common.TaskLoaderDelegate;
+import mobi.tjorn.content.common.BaseResult;
+import mobi.tjorn.content.common.SimpleResult;
+import mobi.tjorn.content.common.TaskLoaderDelegate;
 
 /**
  * A loader that extends {@link android.content.AsyncTaskLoader}

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package mobi.tjorn.common;
+package mobi.tjorn.content.common;
 
 /**
  * A result whose lifecycle is managed by Result* Loaders.

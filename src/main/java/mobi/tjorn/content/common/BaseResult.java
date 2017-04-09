@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package mobi.tjorn.common;
+package mobi.tjorn.content.common;
 
 /**
  * A simple class that can be used as a {@link Result} of Result* Loaders.  Contains either
