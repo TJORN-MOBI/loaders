@@ -25,7 +25,7 @@ buildscript {
 ```
 ```
 dependencies {
-    compile 'mobi.tjorn.content:loaders:1.2.0'
+    implementation 'mobi.tjorn.content:loaders:1.2.0'
 }
 ```
 ### Support library note
